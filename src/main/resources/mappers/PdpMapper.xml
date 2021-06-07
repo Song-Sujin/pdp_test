@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="PdpMapper">
+
+	<!-- Pdp.java의 멤버변수와 대상 테이블의 컬럼 연결 -->
+	<resultMap type="project.penta.pdp.model.Pdp" id="pdpMap">
+		<result property="service" column="service" />
+	</resultMap>
+	
+</mapper>
+
