@@ -9,8 +9,8 @@
 	<h1>
 		Penta Data Platform
 	</h1>
-
-	<a href="${pageContext.request.contextPath }/control.do">control 입장</a>
+	<h2>Welcome page</h2>
+	<a href="${pageContext.request.contextPath }/control.do">control page</a>
 
 </body>
 </html>
