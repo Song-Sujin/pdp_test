@@ -11,11 +11,11 @@ public interface PdpService
 	public List<Pdp> getControlList() throws Exception;
 	
 	// service install
-	public int installService(Pdp input) throws Exception;
+	public int installService(String service_name) throws Exception;
 	
 	// service start
-	public int startService(Pdp input) throws Exception;
+	public int startService(String service_name) throws Exception;
 	
 	// service stop
-	public int stopService(Pdp input) throws Exception;
+	public int stopService(String service_name) throws Exception;
 }

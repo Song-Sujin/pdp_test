@@ -54,13 +54,28 @@ public class PdpController
 	// service install
 	@ResponseBody
 	@RequestMapping(value="/install.do", method=RequestMethod.GET)
-	public String install(Model model, HttpServletRequest request)
+	public ModelAndView install(Model model, HttpServletRequest request)
 	{
-		String result = "";
+		int result = 0;
+		String view = null;
 		
+		try
+		{
+			// 받아온 서비스
+			String service_name = request.getParameter("service_name");
+			
+			// 1. install 스크립트 실행?
+			
+			// 2. 성공시 install_ny를 y로 변경
+			System.out.println(service_name);
+			result = pdpService.installService(service_name); // update문으로 ny상태값 변경
+			
+		} catch (Exception e)
+		{
+			return webHelper.redirect(null, e.getLocalizedMessage());
+		}
 		
-		
-		return result;
+		return new ModelAndView("control.do");
 	}
 	
 	// service start

@@ -9,6 +9,7 @@
 <title>Penta Data Platform</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <meta charset="utf-8" />
 </head>
 <style>
@@ -54,9 +55,9 @@
 								<tr>
 									<td align="center">${service.service_name }</td>
 									<td align="center">실행중</td>
-									<td><button type="button" class="btn btn-primary" value="${service.service_name }" disabled>install</button></td>
-									<td><button type="button" class="btn btn-success" value="${service.service_name }" disabled>start</button></td>
-									<td><button type="button" class="btn btn-danger" value="${service.service_name }">stop</button></td>
+									<td><button type="button" class="btn btn-primary installBtn" value="${service.service_name }" disabled>install</button></td>
+									<td><button type="button" class="btn btn-success startBtn" value="${service.service_name }" disabled>start</button></td>
+									<td><button type="button" class="btn btn-danger stopBtn" value="${service.service_name }">stop</button></td>
 								</tr>
 								</c:when>
 								
@@ -64,9 +65,9 @@
 								<tr>
 									<td align="center">${service.service_name }</td>
 									<td align="center">중지됨</td>
-									<td><button type="button" class="btn btn-primary" value="${service.service_name }" disabled>install</button></td>
-									<td><button type="button" class="btn btn-success" value="${service.service_name }">start</button></td>
-									<td><button type="button" class="btn btn-danger" value="${service.service_name }" disabled>stop</button></td>
+									<td><button type="button" class="btn btn-primary installBtn" value="${service.service_name }" disabled>install</button></td>
+									<td><button type="button" class="btn btn-success startBtn" value="${service.service_name }">start</button></td>
+									<td><button type="button" class="btn btn-danger stopBtn" value="${service.service_name }" disabled>stop</button></td>
 								</tr>
 								</c:when>
 								
@@ -74,9 +75,9 @@
 								<tr>
 									<td align="center">${service.service_name }</td>
 									<td align="center">미설치</td>
-									<td><button type="button" class="btn btn-primary" value="${service.service_name }">install</button></td>
-									<td><button type="button" class="btn btn-success" value="${service.service_name }" disabled>start</button></td>
-									<td><button type="button" class="btn btn-danger" value="${service.service_name }" disabled>stop</button></td>
+									<td><button type="button" class="btn btn-primary installBtn" value="${service.service_name }">install</button></td>
+									<td><button type="button" class="btn btn-success startBtn" value="${service.service_name }" disabled>start</button></td>
+									<td><button type="button" class="btn btn-danger stopBtn" value="${service.service_name }" disabled>stop</button></td>
 								</tr>
 								</c:when>
 							
@@ -85,7 +86,7 @@
 							</c:forEach>
 							
 						</tbody>
-					</table>	
+					</table>
 					</div>
 					<div class="col-md-2">
 					</div>
@@ -97,20 +98,60 @@
 <script type="text/javascript">
 
 	$(function() {
-		ajaxInstall();
+		
+		listAjax();
+		
+		$(".installBtn").click(function() {
+			
+			alert("install ajax 확인");
+			var params = "service_name=" + $(this).val();
+			alert(params);
+			
+			$.ajax({
+				type : "GET",
+				url : "./install.do",
+				data : params,
+				async : false,
+				success : function(args) {
+					console.log(args);
+					
+					
+					
+					
+				},
+				error : function(e) {
+					alert("errer" + e.responseText);
+				}
+			});
+		});
+		
+		$(".startBtn").click(function() {
+			alert("start 버튼 확인");
+		});
+		
+		$(".stopBtn").click(function() {
+			alert("stop 버튼 확인");
+		});
 		
 	});
 	
-	function ajaxInstall() {
-		
+	
+	function listAjax() {
+		alert("리스트");
 		$.ajax({
 			type : "GET",
-			url : "/"
+			url : "./control.do",
+			success : function(args) {
+				alert(args);
+			},
+			error : function(e) {
+				alert("errer" + e.responseText);
+			}
 		});
-		
 	}
-
-
+	
+	
+	
 </script>
 </body>
 </html>

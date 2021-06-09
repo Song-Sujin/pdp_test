@@ -17,5 +17,12 @@
 		FROM services
 	</select>
 	
+	<!-- service install -->
+	<update id="install" parameterType="project.penta.pdp.model.Pdp">
+		UPDATE services
+		SET install_ny = 'y'
+		WHERE service_name = #{service_name}
+	</update>
+	
 </mapper>
 
