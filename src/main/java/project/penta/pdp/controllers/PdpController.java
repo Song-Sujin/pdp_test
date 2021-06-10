@@ -31,6 +31,7 @@ public class PdpController
 	String contextPath;
 	
 	// control 페이지
+	@ResponseBody
 	@RequestMapping(value="/control.do", method=RequestMethod.GET)
 	public ModelAndView control(Model model)
 	{
@@ -46,36 +47,40 @@ public class PdpController
 		
 		model.addAttribute("services", services);
 		
-		System.out.println(services);
-		
 		return new ModelAndView("control");
 	}
 	
 	// service install
 	@ResponseBody
 	@RequestMapping(value="/install.do", method=RequestMethod.GET)
-	public ModelAndView install(Model model, HttpServletRequest request)
+	public Pdp install(Model model, HttpServletRequest request)
 	{
 		int result = 0;
-		String view = null;
+		
+		Pdp services = null;
 		
 		try
 		{
 			// 받아온 서비스
 			String service_name = request.getParameter("service_name");
 			
-			// 1. install 스크립트 실행?
+			// 1. install 스크립트 실행
 			
 			// 2. 성공시 install_ny를 y로 변경
-			System.out.println(service_name);
-			result = pdpService.installService(service_name); // update문으로 ny상태값 변경
+			
+			Pdp input = new Pdp();
+			input.setService_name(service_name);
+			
+			result = pdpService.installService(input);	// update문으로 ny상태값 변경
+			
+			services = pdpService.getService(input);	// 변경 이후 해당 서비스 정보 받아오기
 			
 		} catch (Exception e)
 		{
-			return webHelper.redirect(null, e.getLocalizedMessage());
+			return null;
 		}
 		
-		return new ModelAndView("control.do");
+		return services;
 	}
 	
 	// service start

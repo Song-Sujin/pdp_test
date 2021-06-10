@@ -54,29 +54,29 @@
 								<c:when test="${service.install_ny eq 'y' && service.start_ny eq 'y'}">
 								<tr>
 									<td align="center">${service.service_name }</td>
-									<td align="center">실행중</td>
+									<td align="center" id="strStatus">실행중</td>
 									<td><button type="button" class="btn btn-primary installBtn" value="${service.service_name }" disabled>install</button></td>
-									<td><button type="button" class="btn btn-success startBtn" value="${service.service_name }" disabled>start</button></td>
-									<td><button type="button" class="btn btn-danger stopBtn" value="${service.service_name }">stop</button></td>
+									<td><button type="button" class="btn btn-success startBtn" id="strStart" value="${service.service_name }" disabled>start</button></td>
+									<td><button type="button" class="btn btn-danger stopBtn" id="strStop" value="${service.service_name }">stop</button></td>
 								</tr>
 								</c:when>
 								
 								<c:when test="${service.install_ny eq 'y' && service.start_ny eq 'n'}">
 								<tr>
 									<td align="center">${service.service_name }</td>
-									<td align="center">중지됨</td>
+									<td align="center" id="stpStatus">중지됨</td>
 									<td><button type="button" class="btn btn-primary installBtn" value="${service.service_name }" disabled>install</button></td>
-									<td><button type="button" class="btn btn-success startBtn" value="${service.service_name }">start</button></td>
-									<td><button type="button" class="btn btn-danger stopBtn" value="${service.service_name }" disabled>stop</button></td>
+									<td><button type="button" class="btn btn-success startBtn" id="stpStart" value="${service.service_name }">start</button></td>
+									<td><button type="button" class="btn btn-danger stopBtn" id="stpStop" value="${service.service_name }" disabled>stop</button></td>
 								</tr>
 								</c:when>
 								
 								<c:when test="${service.install_ny eq 'n' && service.start_ny eq 'n'}">
 								<tr>
 									<td align="center">${service.service_name }</td>
-									<td align="center">미설치</td>
-									<td><button type="button" class="btn btn-primary installBtn" value="${service.service_name }">install</button></td>
-									<td><button type="button" class="btn btn-success startBtn" value="${service.service_name }" disabled>start</button></td>
+									<td align="center" id="insStatus">미설치</td>
+									<td><button type="button" class="btn btn-primary installBtn" id="insInstall" value="${service.service_name }">install</button></td>
+									<td><button type="button" class="btn btn-success startBtn" id="insStart" value="${service.service_name }" disabled>start</button></td>
 									<td><button type="button" class="btn btn-danger stopBtn" value="${service.service_name }" disabled>stop</button></td>
 								</tr>
 								</c:when>
@@ -87,6 +87,7 @@
 							
 						</tbody>
 					</table>
+					
 					</div>
 					<div class="col-md-2">
 					</div>
@@ -101,9 +102,8 @@
 		
 		listAjax();
 		
-		$(".installBtn").click(function() {
-			
-			alert("install ajax 확인");
+		$(document).on("click", ".installBtn", function() {
+			alert("install Btn 클릭");
 			var params = "service_name=" + $(this).val();
 			alert(params);
 			
@@ -111,43 +111,44 @@
 				type : "GET",
 				url : "./install.do",
 				data : params,
-				async : false,
-				success : function(args) {
-					console.log(args);
+				dataType: "JSON",
+				async : true,
+				cache : false,
+				success : function(data) {
 					
-					
-					
+					if(data.install_ny == "y") {
+						
+						
+					} else {
+						alert("실패");
+					}
 					
 				},
 				error : function(e) {
 					alert("errer" + e.responseText);
 				}
 			});
+			
 		});
 		
-		$(".startBtn").click(function() {
-			alert("start 버튼 확인");
-		});
 		
-		$(".stopBtn").click(function() {
-			alert("stop 버튼 확인");
-		});
 		
 	});
 	
-	
 	function listAjax() {
-		alert("리스트");
+		
 		$.ajax({
 			type : "GET",
 			url : "./control.do",
-			success : function(args) {
-				alert(args);
+			success : function(data) {
+				alert("리스트 ajax");
+				
 			},
 			error : function(e) {
 				alert("errer" + e.responseText);
 			}
 		});
+		
 	}
 	
 	

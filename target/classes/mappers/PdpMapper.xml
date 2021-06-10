@@ -17,6 +17,13 @@
 		FROM services
 	</select>
 	
+	<!-- 하나의 서비스의 정보 조회 -->
+	<select id="selectItem" parameterType="project.penta.pdp.model.Pdp" resultMap="pdpMap">
+		SELECT service_name, install_ny, start_ny
+		FROM services
+		WHERE service_name = #{service_name}
+	</select>
+	
 	<!-- service install -->
 	<update id="install" parameterType="project.penta.pdp.model.Pdp">
 		UPDATE services

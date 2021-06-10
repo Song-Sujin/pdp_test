@@ -10,12 +10,15 @@ public interface PdpService
 	// control 화면 조회 (hadoop, zookeeper등 서비스 노출 가능성)
 	public List<Pdp> getControlList() throws Exception;
 	
+	// 하나의 서비스의 정보 조회
+	public Pdp getService(Pdp input) throws Exception;
+	
 	// service install
-	public int installService(String service_name) throws Exception;
+	public int installService(Pdp input) throws Exception;
 	
 	// service start
-	public int startService(String service_name) throws Exception;
+	public int startService(Pdp input) throws Exception;
 	
 	// service stop
-	public int stopService(String service_name) throws Exception;
+	public int stopService(Pdp input) throws Exception;
 }
