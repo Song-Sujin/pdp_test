@@ -97,13 +97,124 @@ public class PdpServiceImpl implements PdpService
 	@Override
 	public int startService(Pdp input) throws Exception
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		int result = 0;
+		
+		try
+		{
+			result = sqlSession.update("PdpMapper.start", input);
+			
+			if(result == 0)
+				throw new NullPointerException("result=0");
+		} catch (NullPointerException e)
+		{
+			log.error(e.getLocalizedMessage());
+			throw new Exception("조회된 데이터가 없습니다.");
+		} catch (Exception e)
+		{
+			log.error(e.getLocalizedMessage());
+			throw new Exception("데이터 조회에 실패했습니다.");
+		}
+		
+		return result;
 	}
 
 	// service stop
 	@Override
 	public int stopService(Pdp input) throws Exception
+	{
+		int result = 0;
+		
+		try
+		{
+			result = sqlSession.update("PdpMapper.stop", input);
+			
+			if(result == 0)
+				throw new NullPointerException("result=0");
+		} catch (NullPointerException e)
+		{
+			log.error(e.getLocalizedMessage());
+			throw new Exception("조회된 데이터가 없습니다.");
+		} catch (Exception e)
+		{
+			log.error(e.getLocalizedMessage());
+			throw new Exception("데이터 조회에 실패했습니다.");
+		}
+		
+		return result;
+	}
+
+	@Override
+	public Pdp login(Pdp input) throws Exception
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int installer0(Pdp input) throws Exception
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int installer1(Pdp input) throws Exception
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int installer2(Pdp input) throws Exception
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int installer3(Pdp input) throws Exception
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int installer4(Pdp input) throws Exception
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int installer5(Pdp input) throws Exception
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int installer6(Pdp input) throws Exception
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int installer7(Pdp input) throws Exception
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int installer8(Pdp input) throws Exception
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int installer9(Pdp input) throws Exception
 	{
 		// TODO Auto-generated method stub
 		return 0;

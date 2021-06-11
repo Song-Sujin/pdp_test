@@ -14,14 +14,11 @@
 </head>
 <body>
 	
-	<h1>Login Page</h1>
+	<h1>installer8 Page</h1>
 
-	<form method="post" action="${pageContext.request.contextPath }/login_ok.do">
-		<div>Username</div>
-		<div><input type="text" class="form-control" name="userName"></div>
-		<div>Password</div>
-		<div><input type="text" class="form-control" name="passWord"></div>
-		<div><button type="submit" class="btn btn-primary">login</button></div>
+	<form method="post" action="${pageContext.request.contextPath }/installer8.do">
+		
+		<div><button type="submit" class="btn btn-primary">Next</button></div>
 	</form>
 
 </body>

@@ -12,14 +12,14 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <meta charset="utf-8" />
 </head>
-<style>
-	th, td {
-		text-align: center;
-	}	
-</style>
 <body>
+	
+	<h1>installer5 Page</h1>
 
-
+	<form method="post" action="${pageContext.request.contextPath }/installer5.do">
+		
+		<div><button type="submit" class="btn btn-primary">Next</button></div>
+	</form>
 
 </body>
 </html>

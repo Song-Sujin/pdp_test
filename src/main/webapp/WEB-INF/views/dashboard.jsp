@@ -12,17 +12,42 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <meta charset="utf-8" />
 </head>
+<style>
+	th, td {
+		text-align: center;
+	}
+</style>
 <body>
 	
-	<h1>Login Page</h1>
+	<h1>Dashboard Page</h1>
 
-	<form method="post" action="${pageContext.request.contextPath }/login_ok.do">
-		<div>Username</div>
-		<div><input type="text" class="form-control" name="userName"></div>
-		<div>Password</div>
-		<div><input type="text" class="form-control" name="passWord"></div>
-		<div><button type="submit" class="btn btn-primary">login</button></div>
-	</form>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>서비스명</th>
+			</tr>
+		</thead>
+		<tbody>
+			<%-- 조회 결과에 따른 반복 처리 --%>
+			<c:forEach var="service" items="${services }">
+				<tr>
+					<td><button type="button" class="btn btn-link serviceName" value="${service.service_name }">${service.service_name }</button></td>
+				</tr>
+			</c:forEach>
+			
+		</tbody>
+	</table>
+<script type="text/javascript">
+	
+	$(function() {
+		
+		$(".serviceName").click(function(){
+			alert("버튼 클릭");
+			location.href="/control.do";
+		});
+	});
+
+</script>
 
 </body>
 </html>

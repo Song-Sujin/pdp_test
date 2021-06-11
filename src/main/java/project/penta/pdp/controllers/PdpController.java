@@ -31,7 +31,6 @@ public class PdpController
 	String contextPath;
 	
 	// control 페이지
-	@ResponseBody
 	@RequestMapping(value="/control.do", method=RequestMethod.GET)
 	public ModelAndView control(Model model)
 	{
@@ -53,11 +52,11 @@ public class PdpController
 	// service install
 	@ResponseBody
 	@RequestMapping(value="/install.do", method=RequestMethod.GET)
-	public Pdp install(Model model, HttpServletRequest request)
+	public List<Pdp> install(Model model, HttpServletRequest request)
 	{
 		int result = 0;
 		
-		Pdp services = null;
+		List<Pdp> services = null;
 		
 		try
 		{
@@ -73,7 +72,7 @@ public class PdpController
 			
 			result = pdpService.installService(input);	// update문으로 ny상태값 변경
 			
-			services = pdpService.getService(input);	// 변경 이후 해당 서비스 정보 받아오기
+			services = pdpService.getControlList();	// 변경 이후 모든 서비스 정보 받아오기
 			
 		} catch (Exception e)
 		{
@@ -84,8 +83,294 @@ public class PdpController
 	}
 	
 	// service start
+	@ResponseBody
+	@RequestMapping(value="/start.do", method=RequestMethod.GET)
+	public List<Pdp> start(Model model, HttpServletRequest request)
+	{
+		int result = 0;
+		
+		List<Pdp> services = null;
+		
+		try
+		{
+			// 받아온 서비스
+			String service_name = request.getParameter("service_name");
+			
+			// 1. start 스크립트 실행
+			
+			// 2. 성공시 start_ny를 y로 변경
+			
+			Pdp input = new Pdp();
+			input.setService_name(service_name);
+			
+			result = pdpService.startService(input);	// update문으로 ny상태값 변경
+			
+			services = pdpService.getControlList();	// 변경 이후 모든 서비스 정보 받아오기
+			
+		} catch (Exception e)
+		{
+			return null;
+		}
+		
+		return services;
+	}
 	
 	// service stop
+	@ResponseBody
+	@RequestMapping(value="/stop.do", method=RequestMethod.GET)
+	public List<Pdp> stop(Model model, HttpServletRequest request)
+	{
+		int result = 0;
+		
+		List<Pdp> services = null;
+		
+		try
+		{
+			// 받아온 서비스
+			String service_name = request.getParameter("service_name");
+			
+			// 1. start 스크립트 실행
+			
+			// 2. 성공시 start_ny를 n으로 변경
+			
+			Pdp input = new Pdp();
+			input.setService_name(service_name);
+			
+			result = pdpService.stopService(input);	// update문으로 ny상태값 변경
+			
+			services = pdpService.getControlList();	// 변경 이후 모든 서비스 정보 받아오기
+			
+		} catch (Exception e)
+		{
+			return null;
+		}
+		
+		return services;
+	}
+	
+	// ---------------------------------------------------------------------------
+	
+	// login 버튼 클릭 시 login 처리
+	@RequestMapping(value="/login_ok.do", method=RequestMethod.POST)
+	public ModelAndView login_ok(Model model)
+	{
+		Pdp member = null;
+		
+		try
+		{
+			// 세션 객체에 넣어서 로그인 처리하기
+			
+			
+			//services = pdpService.getControlList();
+		} catch (Exception e)
+		{
+			return webHelper.redirect(null, e.getLocalizedMessage());
+		}
+		
+		model.addAttribute("member", member);
+		
+		return new ModelAndView("installer0");
+	}
+	
+	// installer0 -> installer1
+	@RequestMapping(value="/installer0.do", method=RequestMethod.POST)
+	public ModelAndView installer0(Model model)
+	{
+		Pdp member = null;
+		
+		try
+		{			
+			
+			
+		} catch (Exception e)
+		{
+			return webHelper.redirect(null, e.getLocalizedMessage());
+		}
+		
+		model.addAttribute("member", member);
+		
+		return new ModelAndView("installer1");
+	}
+	
+	// installer1 -> installer2
+	@RequestMapping(value="/installer1.do", method=RequestMethod.POST)
+	public ModelAndView installer1(Model model)
+	{
+		Pdp member = null;
+		
+		try
+		{			
+			
+			
+		} catch (Exception e)
+		{
+			return webHelper.redirect(null, e.getLocalizedMessage());
+		}
+		
+		model.addAttribute("member", member);
+		
+		return new ModelAndView("installer2");
+	}
+	
+	// installer2 -> installer3
+	@RequestMapping(value="/installer2.do", method=RequestMethod.POST)
+	public ModelAndView installer2(Model model)
+	{
+		Pdp member = null;
+		
+		try
+		{			
+			
+			
+		} catch (Exception e)
+		{
+			return webHelper.redirect(null, e.getLocalizedMessage());
+		}
+		
+		model.addAttribute("member", member);
+		
+		return new ModelAndView("installer3");
+	}
+	
+	// installer3 -> installer4
+	@RequestMapping(value="/installer3.do", method=RequestMethod.POST)
+	public ModelAndView installer3(Model model)
+	{
+		Pdp member = null;
+		
+		try
+		{			
+			
+			
+		} catch (Exception e)
+		{
+			return webHelper.redirect(null, e.getLocalizedMessage());
+		}
+		
+		model.addAttribute("member", member);
+		
+		return new ModelAndView("installer4");
+	}
+	
+	// installer4 -> installer5
+	@RequestMapping(value="/installer4.do", method=RequestMethod.POST)
+	public ModelAndView installer4(Model model)
+	{
+		Pdp member = null;
+		
+		try
+		{			
+			
+			
+		} catch (Exception e)
+		{
+			return webHelper.redirect(null, e.getLocalizedMessage());
+		}
+		
+		model.addAttribute("member", member);
+		
+		return new ModelAndView("installer5");
+	}
+	
+	// installer5 -> installer6
+	@RequestMapping(value="/installer5.do", method=RequestMethod.POST)
+	public ModelAndView installer5(Model model)
+	{
+		Pdp member = null;
+		
+		try
+		{			
+			
+			
+		} catch (Exception e)
+		{
+			return webHelper.redirect(null, e.getLocalizedMessage());
+		}
+		
+		model.addAttribute("member", member);
+		
+		return new ModelAndView("installer6");
+	}
+	
+	// installer6 -> installer7
+	@RequestMapping(value="/installer6.do", method=RequestMethod.POST)
+	public ModelAndView installer6(Model model)
+	{
+		Pdp member = null;
+		
+		try
+		{			
+			
+			
+		} catch (Exception e)
+		{
+			return webHelper.redirect(null, e.getLocalizedMessage());
+		}
+		
+		model.addAttribute("member", member);
+		
+		return new ModelAndView("installer7");
+	}
+	
+	// installer7 -> installer8
+	@RequestMapping(value="/installer7.do", method=RequestMethod.POST)
+	public ModelAndView installer7(Model model)
+	{
+		Pdp member = null;
+		
+		try
+		{			
+			
+			
+		} catch (Exception e)
+		{
+			return webHelper.redirect(null, e.getLocalizedMessage());
+		}
+		
+		model.addAttribute("member", member);
+		
+		return new ModelAndView("installer8");
+	}
+	
+	// installer8 -> installer9
+	@RequestMapping(value="/installer8.do", method=RequestMethod.POST)
+	public ModelAndView installer8(Model model)
+	{
+		Pdp member = null;
+		
+		try
+		{			
+			
+			
+		} catch (Exception e)
+		{
+			return webHelper.redirect(null, e.getLocalizedMessage());
+		}
+		
+		model.addAttribute("member", member);
+		
+		return new ModelAndView("installer9");
+	}
+	
+	// installer9 -> dashboard
+	@RequestMapping(value="/installer9.do", method=RequestMethod.POST)
+	public ModelAndView installer9(Model model)
+	{
+		Pdp member = null;
+		
+		try
+		{			
+			
+			
+		} catch (Exception e)
+		{
+			return webHelper.redirect(null, e.getLocalizedMessage());
+		}
+		
+		model.addAttribute("member", member);
+		
+		return new ModelAndView("dashboard");
+	}
 	
 
 }

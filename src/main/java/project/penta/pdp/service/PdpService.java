@@ -21,4 +21,42 @@ public interface PdpService
 	
 	// service stop
 	public int stopService(Pdp input) throws Exception;
+	
+	// -------------------------------------------------------
+	
+	// login
+	public Pdp login(Pdp input) throws Exception;
+	
+	// installer0
+	public int installer0(Pdp input) throws Exception;
+	
+	// installer1
+	public int installer1(Pdp input) throws Exception;
+	
+	// installer2
+	public int installer2(Pdp input) throws Exception;
+	
+	// installer3
+	public int installer3(Pdp input) throws Exception;
+	
+	// installer4
+	public int installer4(Pdp input) throws Exception;
+	
+	// installer5
+	public int installer5(Pdp input) throws Exception;
+	
+	// installer6
+	public int installer6(Pdp input) throws Exception;
+	
+	// installer7
+	public int installer7(Pdp input) throws Exception;
+	
+	// installer8
+	public int installer8(Pdp input) throws Exception;
+	
+	// installer9
+	public int installer9(Pdp input) throws Exception;
+	
+	
+	
 }
