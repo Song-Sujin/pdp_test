@@ -20,9 +20,10 @@
 <body>
 	<h1>Control</h1>
 
-	<c:forEach var="service" items="${services }">
-		<li class="service">${service.service_name }</li>
-	</c:forEach>
+	<form method="post" action="${pageContext.request.contextPath }/installer9.do">
+		
+		<div><button type="submit" class="btn btn-primary">dashboard</button></div>
+	</form>
 	
 	<div class="container-fluid">
 		<div class="row">

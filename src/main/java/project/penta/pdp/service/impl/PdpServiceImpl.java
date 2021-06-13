@@ -1,6 +1,9 @@
 package project.penta.pdp.service.impl;
 
+import java.io.PrintWriter;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,13 +146,57 @@ public class PdpServiceImpl implements PdpService
 		return result;
 	}
 
+	// 로그인
 	@Override
-	public Pdp login(Pdp input) throws Exception
+	public Pdp login(Pdp input, HttpServletResponse response) throws Exception
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Pdp result = null;
+		int checkid = 0;
+		
+		try
+		{
+			response.setContentType("text/html;charset=utf-8");
+			PrintWriter out = response.getWriter();
+			
+			checkid = sqlSession.selectOne("PdpMapper.checkid", input);		// id의 개수 반환
+			
+			// id가 존재하지 않을 때
+			if(checkid == 0) {
+				out.println("<script>");
+				out.println("alert('등록된 아이디가 없습니다.');");
+				out.println("history.go(-1);");
+				out.println("</script>");
+				out.close();
+				return null;
+			} else {	// id가 존재할 때
+				
+				result = sqlSession.selectOne("PdpMapper.login", input);	// 해당하는 id의 id와 pw반환
+				
+				// 실제 pw가 입력한 pw와 일치하지 않을 경우
+				if(!result.getPw().equals(input.getPw())) {
+					out.println("<script>");
+					out.println("alert('비밀번호가 다릅니다.');");
+					out.println("history.go(-1);");
+					out.println("</script>");
+					out.close();
+					return null;
+				} else {
+					return result;
+				}
+			}
+			
+		} catch (NullPointerException e)
+		{
+			log.error(e.getLocalizedMessage());
+			throw new Exception("조회된 데이터가 없습니다.");
+		} catch (Exception e)
+		{
+			log.error(e.getLocalizedMessage());
+			throw new Exception("데이터 조회에 실패했습니다.");
+		}
+		
 	}
-
+	
 	@Override
 	public int installer0(Pdp input) throws Exception
 	{
@@ -220,7 +267,5 @@ public class PdpServiceImpl implements PdpService
 		return 0;
 	}
 
-
-	
 
 }

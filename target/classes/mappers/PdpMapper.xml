@@ -46,5 +46,20 @@
 		WHERE service_name = #{service_name}
 	</update>
 	
+	<!-- 로그인 -->
+	<select id="login" parameterType="project.penta.pdp.model.Pdp" resultMap="pdpMap">
+		SELECT id, pw
+		FROM member
+		WHERE id=#{id}
+	</select>
+	
+	<!-- id확인 -->
+	<select id="checkid" parameterType="project.penta.pdp.model.Pdp" resultType="int">
+		SELECT count(*)
+		FROM member
+		WHERE id=#{id}
+	</select>
+	
+	
 </mapper>
 

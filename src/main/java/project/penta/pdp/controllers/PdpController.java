@@ -3,6 +3,8 @@ package project.penta.pdp.controllers;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -152,16 +154,28 @@ public class PdpController
 	
 	// login 버튼 클릭 시 login 처리
 	@RequestMapping(value="/login_ok.do", method=RequestMethod.POST)
-	public ModelAndView login_ok(Model model)
+	public ModelAndView login_ok(Model model, HttpServletRequest request, HttpServletResponse response)
 	{
 		Pdp member = null;
 		
+		// 세션 객체에 넣어서 로그인 처리하기
+		HttpSession session = request.getSession();
+		
 		try
 		{
-			// 세션 객체에 넣어서 로그인 처리하기
+			String id = request.getParameter("id");
+			String pw = request.getParameter("pw");
 			
+			Pdp input = new Pdp();
+			input.setId(id);
+			input.setPw(pw);
 			
-			//services = pdpService.getControlList();
+			// 여기서 return된 member는 로그인 성공된 정보
+			member = pdpService.login(input, response);
+			
+			// 세션에 로그인 성공한 정보 넣어두기
+			session.setAttribute("member", member);
+			
 		} catch (Exception e)
 		{
 			return webHelper.redirect(null, e.getLocalizedMessage());
@@ -170,6 +184,22 @@ public class PdpController
 		model.addAttribute("member", member);
 		
 		return new ModelAndView("installer0");
+	}
+	
+	@RequestMapping(value = "/logout.do", method = RequestMethod.GET)
+	public ModelAndView logout(HttpSession session, HttpServletResponse response) {
+		
+		try
+		{
+			// 세션 삭제
+			session.invalidate();
+			
+		} catch (Exception e)
+		{
+			return webHelper.redirect(null, e.getLocalizedMessage());
+		}
+		return new ModelAndView("home");
+		
 	}
 	
 	// installer0 -> installer1
@@ -356,18 +386,17 @@ public class PdpController
 	@RequestMapping(value="/installer9.do", method=RequestMethod.POST)
 	public ModelAndView installer9(Model model)
 	{
-		Pdp member = null;
+		List<Pdp> services = null;
 		
 		try
-		{			
-			
-			
+		{
+			services = pdpService.getControlList();
 		} catch (Exception e)
 		{
 			return webHelper.redirect(null, e.getLocalizedMessage());
 		}
 		
-		model.addAttribute("member", member);
+		model.addAttribute("services", services);
 		
 		return new ModelAndView("dashboard");
 	}

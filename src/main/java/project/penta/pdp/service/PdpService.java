@@ -2,6 +2,8 @@ package project.penta.pdp.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import project.penta.pdp.model.Pdp;
 
 // 구현해야 하는 기능들
@@ -25,7 +27,7 @@ public interface PdpService
 	// -------------------------------------------------------
 	
 	// login
-	public Pdp login(Pdp input) throws Exception;
+	public Pdp login(Pdp input, HttpServletResponse response) throws Exception;
 	
 	// installer0
 	public int installer0(Pdp input) throws Exception;

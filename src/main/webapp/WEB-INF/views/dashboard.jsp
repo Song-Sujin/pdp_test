@@ -20,6 +20,12 @@
 <body>
 	
 	<h1>Dashboard Page</h1>
+	
+	<div><span>${member.id }로 로그인 중</span></div>
+	<div>
+		<button type="button" class="btn btn-primary" id="signoutBtn">Sign out</button>
+	</div>
+	
 
 	<table class="table table-hover">
 		<thead>
@@ -43,7 +49,11 @@
 		
 		$(".serviceName").click(function(){
 			alert("버튼 클릭");
-			location.href="/control.do";
+			location.href="./control.do";
+		});
+		
+		$("#signoutBtn").click(function() {
+			location.href="./logout.do";
 		});
 	});
 

@@ -14,5 +14,8 @@ public class Pdp
 	
 	// 실행여부
 	private String start_ny;
+	
+	// 로그인
+	private String id, pw;
 
 }

@@ -15,14 +15,45 @@
 <body>
 	
 	<h1>Login Page</h1>
+	
+	<c:if test="${member == null }">
+		<form method="post" id="loginForm" action="${pageContext.request.contextPath }/login_ok.do">
+			<div>Username</div>
+			<div><input type="text" class="form-control" id="id" name="id"></div>
+			<div>Password</div>
+			<div><input type="password" class="form-control" id="pw" name="pw"></div>
+			<div><button type="button" class="btn btn-primary" id="signinBtn">Sign in</button></div>
+		</form>
+	</c:if>
+	<c:if test="${member != null }">
+		<div><span>${member.id }로 로그인 중</span></div>
+		<div>
+			<button type="button" class="btn btn-primary" id="signoutBtn">Sign out</button>
+		</div>
+	</c:if>
 
-	<form method="post" action="${pageContext.request.contextPath }/login_ok.do">
-		<div>Username</div>
-		<div><input type="text" class="form-control" name="userName"></div>
-		<div>Password</div>
-		<div><input type="text" class="form-control" name="passWord"></div>
-		<div><button type="submit" class="btn btn-primary">login</button></div>
-	</form>
-
+<script type="text/javascript">
+	
+	$(document).ready(function() {
+		
+		$("#signinBtn").click(function() {
+			
+			if($("#id").val()=="" || $("#pw").val()=="") {
+				alert("모든 항목을 입력해 주세요.");
+				return;
+			}
+			
+			$("#loginForm").submit();
+			
+		});
+		
+		$("#signoutBtn").click(function() {
+			location.href="./logout.do";
+		});
+		
+	});
+	
+</script>
 </body>
+
 </html>
