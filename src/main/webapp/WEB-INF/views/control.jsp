@@ -48,7 +48,6 @@
 						</thead>
 						<tbody>
 							<%-- 조회 결과에 따른 반복 처리 --%>
-							<c:forEach var="service" items="${services }">
 							
 							<c:choose>
 								<c:when test="${service.install_ny eq 'y' && service.start_ny eq 'y'}">
@@ -82,8 +81,6 @@
 								</c:when>
 							
 							</c:choose>
-							
-							</c:forEach>
 							
 						</tbody>
 					</table>

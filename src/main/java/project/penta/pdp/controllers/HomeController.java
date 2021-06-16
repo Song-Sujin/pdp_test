@@ -19,6 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 public class HomeController {
+	public static void main(String[] args)
+	{
+		System.out.println();
+	}
 	
 	//private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
@@ -38,7 +42,7 @@ public class HomeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-		return "home";
+		return "temp";
 	}
 	
 }

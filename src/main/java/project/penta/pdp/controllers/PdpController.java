@@ -1,5 +1,8 @@
 package project.penta.pdp.controllers;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,21 +35,36 @@ public class PdpController
 	@Value("#{servletContext.contextPath}")
 	String contextPath;
 	
+	@RequestMapping(value = "/welcome.do", method = RequestMethod.GET)
+	public ModelAndView welcome(Model model) {
+		
+		return new ModelAndView("home");
+		
+	}
+	
 	// control 페이지
 	@RequestMapping(value="/control.do", method=RequestMethod.GET)
-	public ModelAndView control(Model model)
+	public ModelAndView control(Model model,HttpServletRequest request)
 	{
-		List<Pdp> services = null;
+		Pdp service = null;
 		
 		try
 		{
-			services = pdpService.getControlList();
+			String service_name = request.getParameter("service_name");
+			
+			System.out.println(service_name);
+			
+			Pdp input = new Pdp();
+			input.setService_name(service_name);
+			
+			
+			service = pdpService.getService(input);
 		} catch (Exception e)
 		{
 			return webHelper.redirect(null, e.getLocalizedMessage());
 		}
 		
-		model.addAttribute("services", services);
+		model.addAttribute("service", service);
 		
 		return new ModelAndView("control");
 	}
@@ -66,9 +84,40 @@ public class PdpController
 			String service_name = request.getParameter("service_name");
 			
 			// 1. install 스크립트 실행
+			// ansible 스크립트 실행하기
+			System.out.println("hello");
+
+		    ProcessBuilder processBuilder = new ProcessBuilder();
+		    // aa.txt file create test
+		    processBuilder.command("bash", "-c", "ansible-playbook -i /etc/ansible/hosts /etc/ansible/make_a_test.yml");
+
+		    try {
+
+		        Process process = processBuilder.start();
+		        StringBuilder output = new StringBuilder();
+
+		        BufferedReader reader = new BufferedReader(
+		                new InputStreamReader(process.getInputStream()));
+
+		        String line;
+		        while ((line = reader.readLine()) != null) {
+		            output.append(line + "\n");
+		        }
+
+		        int exitVal = process.waitFor();
+		        if (exitVal == 0) {
+		            System.out.println("Success!");
+		            System.out.println(output);
+		            System.exit(0);
+		        } else {
+		        }
+		        } catch (IOException e) {
+		        e.printStackTrace();
+		    } catch (InterruptedException e) {
+		        e.printStackTrace();
+		    }
 			
 			// 2. 성공시 install_ny를 y로 변경
-			
 			Pdp input = new Pdp();
 			input.setService_name(service_name);
 			
@@ -99,6 +148,38 @@ public class PdpController
 			String service_name = request.getParameter("service_name");
 			
 			// 1. start 스크립트 실행
+			// ansible 스크립트 실행하기
+			System.out.println("hello");
+
+		    ProcessBuilder processBuilder = new ProcessBuilder();
+		    // aa.txt file create test
+		    processBuilder.command("bash", "-c", "ansible-playbook -i /etc/ansible/hosts /etc/ansible/make_a_test.yml");
+
+		    try {
+
+		        Process process = processBuilder.start();
+		        StringBuilder output = new StringBuilder();
+
+		        BufferedReader reader = new BufferedReader(
+		                new InputStreamReader(process.getInputStream()));
+
+		        String line;
+		        while ((line = reader.readLine()) != null) {
+		            output.append(line + "\n");
+		        }
+
+		        int exitVal = process.waitFor();
+		        if (exitVal == 0) {
+		            System.out.println("Success!");
+		            System.out.println(output);
+		            System.exit(0);
+		        } else {
+		        }
+		        } catch (IOException e) {
+		        e.printStackTrace();
+		    } catch (InterruptedException e) {
+		        e.printStackTrace();
+		    }
 			
 			// 2. 성공시 start_ny를 y로 변경
 			
@@ -165,6 +246,40 @@ public class PdpController
 		{
 			String id = request.getParameter("id");
 			String pw = request.getParameter("pw");
+			
+			Pdp input = new Pdp();
+			input.setId(id);
+			input.setPw(pw);
+			
+			// 여기서 return된 member는 로그인 성공된 정보
+			member = pdpService.login(input, response);
+			
+			// 세션에 로그인 성공한 정보 넣어두기
+			session.setAttribute("member", member);
+			
+		} catch (Exception e)
+		{
+			return webHelper.redirect(null, e.getLocalizedMessage());
+		}
+		
+		model.addAttribute("member", member);
+		
+		return new ModelAndView("installer0");
+	}
+	
+	// temp페이지에서 installer0페이지로 이동
+	@RequestMapping(value="/login_ok_tmp.do", method=RequestMethod.GET)
+	public ModelAndView login_ok_tmp(Model model, HttpServletRequest request, HttpServletResponse response)
+	{
+		Pdp member = null;
+		
+		// 세션 객체에 넣어서 로그인 처리하기
+		HttpSession session = request.getSession();
+		
+		try
+		{
+			String id = "penta";
+			String pw = "bigdata99";
 			
 			Pdp input = new Pdp();
 			input.setId(id);
@@ -399,6 +514,83 @@ public class PdpController
 		model.addAttribute("services", services);
 		
 		return new ModelAndView("dashboard");
+	}
+	
+	// temp 페이지에서 dashboard 페이지로 이동
+	@RequestMapping(value="/dashboard.do", method=RequestMethod.GET)
+	public ModelAndView dashboard(Model model, HttpServletRequest request, HttpServletResponse response)
+	{
+		Pdp member = null;
+		List<Pdp> services = null;
+		
+		// 세션 객체에 넣어서 로그인 처리하기
+		HttpSession session = request.getSession();
+		
+		try
+		{
+			String id = "penta";
+			String pw = "bigdata99";
+			
+			Pdp input = new Pdp();
+			input.setId(id);
+			input.setPw(pw);
+			
+			// 여기서 return된 member는 로그인 성공된 정보
+			member = pdpService.login(input, response);
+			
+			services = pdpService.getControlList();
+			
+			// 세션에 로그인 성공한 정보 넣어두기
+			session.setAttribute("member", member);
+			
+		} catch (Exception e)
+		{
+			return webHelper.redirect(null, e.getLocalizedMessage());
+		}
+		
+		model.addAttribute("services", services);
+		model.addAttribute("member", member);
+		
+		return new ModelAndView("dashboard");
+	}
+	
+	// temp 페이지에서 control 페이지로 이동
+	@RequestMapping(value="/control_tmp.do", method=RequestMethod.GET)
+	public ModelAndView control_tmp(Model model, HttpServletRequest request, HttpServletResponse response)
+	{
+		Pdp member = null;
+		Pdp service = null;
+		// 세션 객체에 넣어서 로그인 처리하기
+		HttpSession session = request.getSession();
+		
+		try
+		{
+			String id = "penta";
+			String pw = "bigdata99";
+			String service_name = "hadoop";
+			
+			Pdp input = new Pdp();
+			input.setId(id);
+			input.setPw(pw);
+			input.setService_name(service_name);
+			
+			// 여기서 return된 member는 로그인 성공된 정보
+			member = pdpService.login(input, response);
+			
+			service = pdpService.getService(input);
+			
+			// 세션에 로그인 성공한 정보 넣어두기
+			session.setAttribute("member", member);
+			
+		} catch (Exception e)
+		{
+			return webHelper.redirect(null, e.getLocalizedMessage());
+		}
+		
+		model.addAttribute("service", service);
+		model.addAttribute("member", member);
+		
+		return new ModelAndView("control");
 	}
 	
 

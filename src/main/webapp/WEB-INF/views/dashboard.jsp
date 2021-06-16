@@ -24,37 +24,238 @@
 	<div><span>${member.id }로 로그인 중</span></div>
 	<div>
 		<button type="button" class="btn btn-primary" id="signoutBtn">Sign out</button>
-	</div>
-	
+	</div>	
 
-	<table class="table table-hover">
-		<thead>
-			<tr>
-				<th>서비스명</th>
-			</tr>
-		</thead>
-		<tbody>
-			<%-- 조회 결과에 따른 반복 처리 --%>
-			<c:forEach var="service" items="${services }">
-				<tr>
-					<td><button type="button" class="btn btn-link serviceName" value="${service.service_name }">${service.service_name }</button></td>
-				</tr>
-			</c:forEach>
-			
-		</tbody>
-	</table>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-12">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-2">
+					</div>
+					<div class="col-md-8">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>서비스명</th>
+								<th>상태</th>
+								<th>설치</th>
+								<th>시작</th>
+								<th>중지</th>
+							</tr>
+						</thead>
+						<tbody>
+							<%-- 조회 결과에 따른 반복 처리 --%>
+							<c:forEach var="service" items="${services }">
+							
+							<c:choose>
+								<c:when test="${service.install_ny eq 'y' && service.start_ny eq 'y'}">
+								<tr>
+									<td><input type="text" class="btn btn-link serviceName" value="${service.service_name }"/></td>
+									<td align="center" class="statusTxt">실행중</td>
+									<td><button type="button" class="btn btn-primary installBtn" value="${service.service_name }" disabled>install</button></td>
+									<td><button type="button" class="btn btn-success startBtn" value="${service.service_name }" disabled>start</button></td>
+									<td><button type="button" class="btn btn-danger stopBtn" value="${service.service_name }">stop</button></td>
+								</tr>
+								</c:when>
+								
+								<c:when test="${service.install_ny eq 'y' && service.start_ny eq 'n'}">
+								<tr>
+									<td><input type="text" class="btn btn-link serviceName" value="${service.service_name }"/></td>
+									<td align="center" class="statusTxt">중지됨</td>
+									<td><button type="button" class="btn btn-primary installBtn" value="${service.service_name }" disabled>install</button></td>
+									<td><button type="button" class="btn btn-success startBtn" value="${service.service_name }">start</button></td>
+									<td><button type="button" class="btn btn-danger stopBtn" value="${service.service_name }" disabled>stop</button></td>
+								</tr>
+								</c:when>
+								
+								<c:when test="${service.install_ny eq 'n' && service.start_ny eq 'n'}">
+								<tr>
+									<td><input type="text" class="btn btn-link serviceName" value="${service.service_name }"/></td>
+									<td align="center" class="statusTxt">미설치</td>
+									<td><button type="button" class="btn btn-primary installBtn" value="${service.service_name }">install</button></td>
+									<td><button type="button" class="btn btn-success startBtn" value="${service.service_name }" disabled>start</button></td>
+									<td><button type="button" class="btn btn-danger stopBtn" value="${service.service_name }" disabled>stop</button></td>
+								</tr>
+								</c:when>
+							
+							</c:choose>
+							
+							</c:forEach>
+							
+						</tbody>
+					</table>
+					
+					</div>
+					<div class="col-md-2">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 <script type="text/javascript">
 	
 	$(function() {
 		
-		$(".serviceName").click(function(){
-			alert("버튼 클릭");
-			location.href="./control.do";
-		});
-		
+		// logout버튼 클릭 시
 		$("#signoutBtn").click(function() {
 			location.href="./logout.do";
 		});
+		
+		// 서비스명 클릭 시
+		$(".serviceName").click(function(){
+			
+			var service_name = $(this).val();
+			
+			location.href="./control.do?service_name=" + service_name;
+		});
+		
+		// install 버튼 클릭 시 
+		$(document).on("click", ".installBtn", function() {
+			var params = "service_name=" + $(this).val();
+			
+			// 현재 선택된 서비스명
+			var service_name = $(this).val();
+			// 방금 선택된 install 버튼
+			var installBtn = $(this);
+			var td = installBtn.parent();
+			var tr = td.parent();
+			
+			// 현재 선택된 서비스의 td들
+			var tds = tr.children();
+			
+			$.ajax({
+				type : "GET",
+				url : "./install.do",
+				data : params,
+				dataType: "JSON",
+				async : false,
+				success : function(data) {
+					
+					// 받아온 전체 리스트 돌리기
+					for(var i=0;i<data.length;i++) {
+						// 선택한 service_name과 일치할 경우 변경하기
+						if(data[i].service_name == service_name) {
+							if(data[i].install_ny == "y") {
+								
+								// install 버튼을 비활성화
+								$(installBtn).attr("disabled", true);
+								// 상태값 변경
+								$(tds.eq(1)).text("중지됨");
+								// start 버튼 활성화								
+								$(tds.eq(3).children()).attr("disabled", false);
+								
+							} else {
+								console.log("변경 안됨");
+							}
+						}
+					}
+					
+				},
+				error : function(e) {
+					alert("errer" + e.responseText);
+				}
+			});
+			
+		});
+		
+		// start 버튼 클릭 시
+		$(document).on("click", ".startBtn", function() {
+			
+			var params = "service_name=" + $(this).val();
+			var service_name = $(this).val();
+			
+			var startBtn = $(this);
+			var td = startBtn.parent();
+			var tr = td.parent();
+			
+			var tds = tr.children();
+			
+			$.ajax({
+				type : "GET",
+				url : "./start.do",
+				data : params,
+				dataType: "JSON",
+				async : false,
+				success : function(data) {
+					
+					// 받아온 전체 리스트 돌리기
+					for(var i=0;i<data.length;i++) {
+						// 선택한 service_name과 일치할 경우 변경하기
+						if(data[i].service_name == service_name) {
+							if(data[i].start_ny == "y") {
+								
+								console.log(tds);
+								// start 버튼을 비활성화
+								$(startBtn).attr("disabled", true);
+								// 상태값 변경
+								$(tds.eq(1)).text("실행중");
+								// stop 버튼 활성화								
+								$(tds.eq(4).children()).attr("disabled", false);
+								
+							} else {
+								console.log("변경 안됨");
+							}
+						}
+					}
+					
+				},
+				error : function(e) {
+					alert("errer" + e.responseText);
+				}
+			});
+			
+		});
+		
+		// stop 버튼 클릭 시
+		$(document).on("click", ".stopBtn", function() {
+			var params = "service_name=" + $(this).val();
+			var service_name = $(this).val();
+			
+			var stopBtn = $(this);
+			var td = stopBtn.parent();
+			var tr = td.parent();
+			
+			var tds = tr.children();
+			
+			$.ajax({
+				type : "GET",
+				url : "./stop.do",
+				data : params,
+				dataType: "JSON",
+				async : false,
+				success : function(data) {
+					
+					// 받아온 전체 리스트 돌리기
+					for(var i=0;i<data.length;i++) {
+						// 선택한 service_name과 일치할 경우 변경하기
+						if(data[i].service_name == service_name) {
+							if(data[i].start_ny == "n") {
+								
+								// stop 버튼을 비활성화
+								$(stopBtn).attr("disabled", true);
+								// 상태값 변경
+								$(tds.eq(1)).text("중지됨");
+								// start 버튼 활성화								
+								$(tds.eq(3).children()).attr("disabled", false);
+								
+							} else {
+								console.log("변경 안됨");
+							}
+						}
+					}
+					
+				},
+				error : function(e) {
+					alert("errer" + e.responseText);
+				}
+			});
+			
+		});
+		
 	});
 
 </script>
