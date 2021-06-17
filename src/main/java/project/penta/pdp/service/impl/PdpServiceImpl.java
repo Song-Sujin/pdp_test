@@ -1,5 +1,7 @@
 package project.penta.pdp.service.impl;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.List;
 
@@ -266,6 +268,20 @@ public class PdpServiceImpl implements PdpService
 	{
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public int ansibleTest() throws Exception
+	{
+		Process process = Runtime.getRuntime().exec("ansible-playbook -i /etc/ansible/hosts /etc/ansible/make_a_test.yml");
+		
+		process.getErrorStream().close(); 
+		process.getInputStream().close(); 
+		process.getOutputStream().close(); 
+
+		process.waitFor(); 
+		
+		return 1;
 	}
 
 

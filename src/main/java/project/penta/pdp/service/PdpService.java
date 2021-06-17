@@ -29,6 +29,16 @@ public interface PdpService
 	// login
 	public Pdp login(Pdp input, HttpServletResponse response) throws Exception;
 	
+	// ansible test
+	public int ansibleTest() throws Exception;
+	
+	
+	
+	
+	
+	
+	
+	
 	// installer0
 	public int installer0(Pdp input) throws Exception;
 	
