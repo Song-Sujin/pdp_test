@@ -271,18 +271,143 @@ public class PdpServiceImpl implements PdpService
 	}
 
 	@Override
-	public int ansibleTest() throws Exception
+	public String osInstall() throws Exception
 	{
-		Process process = Runtime.getRuntime().exec("ansible-playbook -i /etc/ansible/hosts /etc/ansible/make_a_test.yml");
+		Process process = Runtime.getRuntime().exec("sudo -u penta ansible-playbook -i /etc/ansible/hosts /etc/ansible/install_os.yaml");
 		
-		process.getErrorStream().close(); 
-		process.getInputStream().close(); 
-		process.getOutputStream().close(); 
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(process.getInputStream()));
 
-		process.waitFor(); 
-		
-		return 1;
+        String line;
+        String output = "";
+        /*
+         * StringBuilder code
+        while ((line = reader.readLine()) != null) {
+            line.append(line + "\n");
+        }
+        */
+        
+        while ((line = reader.readLine()) != null) {
+            System.out.println(line + "\n");
+            output += line + "\n";
+        }
+        
+		int exitVal = process.waitFor();
+		System.out.println("exitVal : " + exitVal);
+
+		return output;
 	}
+	
+	@Override
+	public String postgresInstall() throws Exception
+	{
+		Process process = Runtime.getRuntime().exec("sudo -u penta ansible-playbook -i /etc/ansible/hosts /etc/ansible/install_postgres.yaml");
+		
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(process.getInputStream()));
+
+        String line;
+        String output = "";
+        /*
+         * StringBuilder code
+        while ((line = reader.readLine()) != null) {
+            line.append(line + "\n");
+        }
+        */
+        
+        while ((line = reader.readLine()) != null) {
+            System.out.println(line + "\n");
+            output += line + "\n";
+        }
+        
+		int exitVal = process.waitFor();
+		System.out.println("exitVal : " + exitVal);
+
+		return output;
+	}
+
+	@Override
+	public String hadoopInstall() throws Exception
+	{
+		Process process = Runtime.getRuntime().exec("sudo -u penta ansible-playbook -i /etc/ansible/hosts /etc/ansible/install_hadoop.yaml");
+		
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(process.getInputStream()));
+
+        String line;
+        String output = "";
+        /*
+         * StringBuilder code
+        while ((line = reader.readLine()) != null) {
+            line.append(line + "\n");
+        }
+        */
+        
+        while ((line = reader.readLine()) != null) {
+            System.out.println(line + "\n");
+            output += line + "\n";
+        }
+        
+		int exitVal = process.waitFor();
+		System.out.println("exitVal : " + exitVal);
+
+		return output;
+	}
+
+	@Override
+	public String hiveInstall() throws Exception
+	{
+		Process process = Runtime.getRuntime().exec("sudo -u penta ansible-playbook -i /etc/ansible/hosts /etc/ansible/install_hive.yaml");
+		
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(process.getInputStream()));
+
+        String line;
+        String output = "";
+        /*
+         * StringBuilder code
+        while ((line = reader.readLine()) != null) {
+            line.append(line + "\n");
+        }
+        */
+        
+        while ((line = reader.readLine()) != null) {
+            System.out.println(line + "\n");
+            output += line + "\n";
+        }
+        
+		int exitVal = process.waitFor();
+		System.out.println("exitVal : " + exitVal);
+
+		return output;
+	}
+
+	// resultTxt update하기
+	@Override
+	public int updateResult(Pdp input) throws Exception
+	{
+		int result = 0;
+		
+		try
+		{
+			result = sqlSession.update("PdpMapper.updateResult", input);
+			
+			if(result == 0)
+				throw new NullPointerException("result=0");
+		} catch (NullPointerException e)
+		{
+			log.error(e.getLocalizedMessage());
+			throw new Exception("조회된 데이터가 없습니다.");
+		} catch (Exception e)
+		{
+			log.error(e.getLocalizedMessage());
+			throw new Exception("데이터 조회에 실패했습니다.");
+		}
+		
+		return result;
+	}
+
+	
 
 
 }

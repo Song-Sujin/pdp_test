@@ -76,62 +76,67 @@ public class PdpController
 	@RequestMapping(value = "/install.do", method = RequestMethod.GET)
 	public List<Pdp> install(Model model, HttpServletRequest request)
 	{
-		int result = 0;
+		int updateny = 0;
+		int updateresult = 0;
 
 		List<Pdp> services = null;
 
 		try
 		{
-			// 받아온 서비스
+			// request로 넘어온 service_name
 			String service_name = request.getParameter("service_name");
 
-			// 1. install 스크립트 실행
-			// ansible 스크립트 실행하기
-			System.out.println("hello");
+			// 1. ansible 스크립트 실행
+			String result_txt = "";
+			
+			switch (service_name) {
+			case "os" :
+				result_txt = pdpService.osInstall();
+				break;
+			case "postgres" :
+				result_txt = pdpService.postgresInstall();
+				break;
+			case "hadoop" : 
+				result_txt = pdpService.hadoopInstall();
+				System.out.println("inside hadoop switch");
+				break;
+			case "hive" :
+				result_txt = pdpService.hiveInstall();
+				break;
+			default :
+				System.out.println("default");
+				result_txt = null;
+				break;
+			}
+			
+			System.out.println("after switch : " + result_txt);
 
-			ProcessBuilder processBuilder = new ProcessBuilder();
-			// aa.txt file create test
-			processBuilder.command("bash", "-c", "ansible-playbook -i /etc/ansible/hosts /etc/ansible/make_a_test.yml");
-
-			try
+			// 2. 스크립트 수행 후 db update 실행
+			if (result_txt != null)
 			{
-
-				Process process = processBuilder.start();
-				StringBuilder output = new StringBuilder();
-
-				BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-				String line;
-				while ((line = reader.readLine()) != null)
-				{
-					output.append(line + "\n");
-				}
-
-				int exitVal = process.waitFor();
-				if (exitVal == 0)
-				{
-					System.out.println("Success!");
-					System.out.println(output);
-					System.exit(0);
-				} else
-				{
-				}
-			} catch (IOException e)
-			{
-				e.printStackTrace();
-			} catch (InterruptedException e)
-			{
-				e.printStackTrace();
+				// start_ny를 y로 update
+				// request로 넘어온 service_name을 input에 담아서 넘기기
+				Pdp input = new Pdp();
+				input.setService_name(service_name);
+				input.setResult_txt(result_txt); // hadoop의 결과
+				
+				// install_ny값 y로 update하기
+				updateny = pdpService.installService(input);
+				// resultTxt값 update하기
+				updateresult = pdpService.updateResult(input);
+				
+				// 변경 이후 모든 서비스 정보 받아오기
+				services = pdpService.getControlList();
+				
+				System.out.println("services checkaaa : " + services);
 			}
 
-			// 2. 성공시 install_ny를 y로 변경
-			Pdp input = new Pdp();
-			input.setService_name(service_name);
-
-			result = pdpService.installService(input); // update문으로 ny상태값 변경
-
-			services = pdpService.getControlList(); // 변경 이후 모든 서비스 정보 받아오기
-
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		} catch (InterruptedException e)
+		{
+			e.printStackTrace();
 		} catch (Exception e)
 		{
 			return null;
@@ -145,68 +150,70 @@ public class PdpController
 	@RequestMapping(value = "/start.do", method = RequestMethod.GET)
 	public List<Pdp> start(Model model, HttpServletRequest request)
 	{
-		int result = 0;
+		int updateny = 0;
+		int updateresult = 0;
 
 		List<Pdp> services = null;
 
 		try
 		{
-			// 받아온 서비스
+			// request로 넘어온 service_name
 			String service_name = request.getParameter("service_name");
 
-			// 1. start 스크립트 실행
-			System.out.println("hello");
+			// 1. ansible 스크립트 실행
+			String result_txt = "";
 			
-			// ansible 스크립트 실행하기
-			/*
-			int ansible = pdpService.ansibleTest();
-			
-			System.out.println(ansible);
-			
-			// 2. 성공시 start_ny를 y로 변경
-			
-			if(ansible==1) {
-				
-				System.out.println("ansible if");
-				
+			switch (service_name) {
+			case "os" :
+				result_txt = pdpService.osInstall();
+				break;
+			case "postgres" :
+				result_txt = pdpService.postgresInstall();
+				break;
+			case "hadoop" : 
+				result_txt = pdpService.hadoopInstall();
+				break;
+			case "hive" :
+				result_txt = pdpService.hiveInstall();
+				break;
+			default :
+				System.out.println("default");
+				result_txt = null;
+				break;
+			}
+
+			// 2. 스크립트 수행 후 db update 실행
+			if (result_txt != null)
+			{
+				// start_ny를 y로 update
+				// request로 넘어온 service_name을 input에 담아서 넘기기
 				Pdp input = new Pdp();
 				input.setService_name(service_name);
-				System.out.println(service_name);
-
-				result = pdpService.startService(input); // update문으로 ny상태값 변경
-
-				System.out.println("result : " + result);
-
-				services = pdpService.getControlList(); // 변경 이후 모든 서비스 정보 받아오기
-
-				System.out.println("services : " + services);
+				input.setResult_txt(result_txt); // hadoop의 결과
 				
+				// start_ny값 y로 update하기
+				updateny = pdpService.startService(input);
+				// resultTxt값 update하기
+				updateresult = pdpService.updateResult(input);
+				
+				// 변경 이후 모든 서비스 정보 받아오기
+				services = pdpService.getControlList();
+				
+				// 받아온 정보에서 하둡 찾기
+				/*
+				for(int i=0;i<services.size();i++) {
+					
+					// 받아온 전체 리스트중 선택한 service_name이랑 일치할 경우
+					if(services.get(i).getService_name().equals(service_name)) {
+						// 그 서비스의 resultTxt에 넣기
+						services.get(i).setResult_txt(result_txt);
+					}
+				}
+				*/
+				
+				
+				System.out.println("services checkaaa : " + services);
 			}
-			*/
-			
-			// 1. ansible 스크립트 실행
-			Process process = Runtime.getRuntime().exec("ansible-playbook -i /etc/ansible/hosts /etc/ansible/make_a_test.yml");
-			
-			process.getErrorStream().close(); 
-			process.getInputStream().close(); 
-			process.getOutputStream().close(); 
-
-			process.waitFor();
-			
-			
-			// 2. 성공시 start_ny를 y로 변경
-			Pdp input = new Pdp();
-			input.setService_name(service_name);
-			System.out.println(service_name);
-
-			result = pdpService.startService(input); // update문으로 ny상태값 변경
-
-			System.out.println("result : " + result);
-
-			services = pdpService.getControlList(); // 변경 이후 모든 서비스 정보 받아오기
-
-			System.out.println("services : " + services);
-			
 
 		} catch (IOException e)
 		{
@@ -218,7 +225,7 @@ public class PdpController
 		{
 			return null;
 		}
-
+		
 		return services;
 	}
 

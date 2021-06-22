@@ -9,14 +9,22 @@
 		<result property="service_name" column="service_name" />
 		<result property="install_ny" column="install_ny" />
 		<result property="start_ny" column="start_ny" />
+		<result property="result_txt" column="result_txt" />
 	</resultMap>
 	
 	<!-- 모든 서비스 조회 -->
 	<select id="selectList" parameterType="project.penta.pdp.model.Pdp" resultMap="pdpMap">
-		SELECT service_name, install_ny, start_ny
+		SELECT service_name, install_ny, start_ny, result_txt, num
 		FROM services
-		ORDER BY 1
+		ORDER BY num
 	</select>
+	
+	<!-- resultTxt update -->
+	<update id="updateResult" parameterType="project.penta.pdp.model.Pdp">
+		UPDATE services
+		SET result_txt = #{result_txt}
+		WHERE service_name = #{service_name}
+	</update>
 	
 	<!-- 하나의 서비스의 정보 조회 -->
 	<select id="selectItem" parameterType="project.penta.pdp.model.Pdp" resultMap="pdpMap">

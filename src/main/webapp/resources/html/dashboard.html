@@ -1,0 +1,155 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Layout</title>
+  
+  
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Karla:400,700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet"  type="text/css" href="style.css">
+  <link rel="stylesheet" href="asset/style2.css">
+  <script data-search-pseudo-elements="" defer="" src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-default mb-0 pb-0">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" id="sidebarCollapse" href="#">
+          <h5><div class="logo">Penta PDP</div></h5>
+        </a>
+      </div>
+
+      <div class="navbar-header">
+        <a class="navbar-brand" id="sidebarCollapse" href="#">
+          <h5>Login User</h5>
+        </a>
+      </div>
+
+    </div>
+  </nav>
+  <div class="wrapper d-flex align-items-stretch">
+    <nav id="sidebar" class="">
+      <ul class="list-unstyled components mb-5 mt-5">
+        <li class="active">
+          <a href="#"><span class="fa fa-home"></span> Home</a>
+        </li>
+        <li>
+          <a href="#"><span class="fa fa-user"></span> About</a>
+        </li>
+        <li>
+          <a href="#"><span class="fa fa-sticky-note"></span> Blog</a>
+        </li>
+        <li>
+          <a href="#"><span class="fa fa-cogs"></span> Services</a>
+        </li>
+        <li>
+          <a href="#"><span class="fa fa-paper-plane"></span> Contacts</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div id="content" class="p-3 p-md-5">
+
+      <div class="" style="height:90%;">
+
+        <div class="container">
+          <h2 class="mb-4">DashBoard Monitoring</h2>
+          <div class="row mb-4">
+            <div class="col-4">
+              <div class="card">
+                <div class="card-body">
+                  <canvas id="chart1" style="max-width: 500px;"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="card">
+                <div class="card-body">
+                  <canvas id="chart2" style="max-width: 500px;"></canvas>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="card">
+                <div class="card-body">
+                  <canvas id="chart3" style="max-width: 500px;"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <div class="card">
+                <div class="card-body">
+                  <canvas id="chart4" style="max-width: 500px;"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="card">
+                <div class="card-body">
+                  <canvas id="chart5" style="max-width: 500px;"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="card">
+                <div class="card-body">
+                  <canvas id="chart6" style="max-width: 500px;"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
+      </div>
+
+    </div>
+
+  </div>
+  <footer class="footer">
+    <p class="pt-3">
+      Copyright ©<script>document.write(new Date().getFullYear());</script> All rights reserved by PentaSystems
+    </p>
+  </footer>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script> -->
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="./js/chart.js"></script>
+  <script type="text/javascript">
+  (function($) {
+
+    "use strict";
+
+    var fullHeight = function() {
+
+      $('.js-fullheight').css('height', $(window).height());
+      $(window).resize(function(){
+        $('.js-fullheight').css('height', $(window).height());
+      });
+
+    };
+    fullHeight();
+
+    $('#sidebarCollapse').on('click', function () {
+      $('#sidebar').toggleClass('active');
+    });
+
+  })(jQuery);
+  </script>
+
+
+
+</body>
+
+</html>

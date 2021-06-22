@@ -29,8 +29,17 @@ public interface PdpService
 	// login
 	public Pdp login(Pdp input, HttpServletResponse response) throws Exception;
 	
-	// ansible test
-	public int ansibleTest() throws Exception;
+	// os install
+	public String osInstall() throws Exception;
+	
+	// postgres install
+	public String postgresInstall() throws Exception;
+	
+	// hadoop install
+	public String hadoopInstall() throws Exception;
+	
+	// hive install
+	public String hiveInstall() throws Exception;
 	
 	
 	
@@ -68,6 +77,8 @@ public interface PdpService
 	
 	// installer9
 	public int installer9(Pdp input) throws Exception;
+
+	public int updateResult(Pdp input) throws Exception;
 	
 	
 	

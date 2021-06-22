@@ -17,5 +17,8 @@ public class Pdp
 	
 	// 로그인
 	private String id, pw;
+	
+	// 결과값
+	private String result_txt;
 
 }
