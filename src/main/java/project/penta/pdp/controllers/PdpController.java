@@ -27,6 +27,9 @@ import project.penta.pdp.service.PdpService;
 @Controller
 public class PdpController
 {
+	// 설치 스크립트 작동 여부를 판단하는 flag 값 선언
+	private boolean installFlag = false;
+	
 	@Autowired
 	WebHelper webHelper;
 
@@ -85,50 +88,91 @@ public class PdpController
 		{
 			// request로 넘어온 service_name
 			String service_name = request.getParameter("service_name");
-
-			// 1. ansible 스크립트 실행
-			String result_txt = "";
 			
-			switch (service_name) {
-			case "os" :
-				result_txt = pdpService.osInstall();
-				break;
-			case "postgres" :
-				result_txt = pdpService.postgresInstall();
-				break;
-			case "hadoop" : 
-				result_txt = pdpService.hadoopInstall();
-				System.out.println("inside hadoop switch");
-				break;
-			case "hive" :
-				result_txt = pdpService.hiveInstall();
-				break;
-			default :
-				System.out.println("default");
-				result_txt = null;
-				break;
-			}
-			
-			System.out.println("after switch : " + result_txt);
-
-			// 2. 스크립트 수행 후 db update 실행
-			if (result_txt != null)
-			{
-				// start_ny를 y로 update
-				// request로 넘어온 service_name을 input에 담아서 넘기기
-				Pdp input = new Pdp();
-				input.setService_name(service_name);
-				input.setResult_txt(result_txt); // hadoop의 결과
+			if (installFlag) {
+				// flag 가 true인 상태 : 이미 스크립트가 실행된 상태
 				
-				// install_ny값 y로 update하기
-				updateny = pdpService.installService(input);
-				// resultTxt값 update하기
-				updateresult = pdpService.updateResult(input);
+				System.out.println("already installed");
+				// 이미 작업이 수행중이라는것을 안내해줄 필요는 없고, 작업이 안되게끔 막아야함
+				// 이미 if문으로 들어온거 자체가 true이니까 아래 else문의 작업을 수행하지 않고
+				// 아무 작업이 없이 끝날듯
 				
-				// 변경 이후 모든 서비스 정보 받아오기
+				
+				//Pdp input = new Pdp(); 
+				//input.setResult_txt("이미 작업이 수행중입니다.");
+				
+				//services.add(input); 
+				
+				// 모든 서비스 정보 받아오기
 				services = pdpService.getControlList();
 				
-				System.out.println("services checkaaa : " + services);
+			} else {
+				// flag 가 false인 상태 : 아직 스크립트가 실행된 적 없는 상태
+				// 앤서블 스크립트부터 작업 수행
+				
+				System.out.println("else문 시작 : " + installFlag);
+				
+				
+				// 스크립트 수행 전에 flag값을 true로 변경
+				installFlag = true;
+				
+				System.out.println("스크립트 수행전 true로 바꾸고 난 뒤 : " + installFlag);
+				
+				// 1. ansible 스크립트 실행
+				String result_txt = "";
+				
+				switch (service_name) {
+				case "os" :
+					result_txt = pdpService.osInstall();
+					break;
+				case "postgres" :
+					result_txt = pdpService.postgresInstall();
+					break;
+				case "hadoop" : 
+					result_txt = pdpService.hadoopInstall();
+					System.out.println("inside hadoop switch");
+					break;
+				case "hive" :
+					result_txt = pdpService.hiveInstall();
+					break;
+				default :
+					System.out.println("default");
+					result_txt = null;
+					break;
+				}
+				
+				System.out.println("flag값 true로 변경 " + installFlag);
+
+				// 2. 스크립트 수행 후 db update 실행
+				if (result_txt != null)
+				{
+					// start_ny를 y로 update
+					// request로 넘어온 service_name을 input에 담아서 넘기기
+					Pdp input = new Pdp();
+					input.setService_name(service_name);
+					input.setResult_txt(result_txt); // hadoop의 결과
+					
+					// install_ny값 y로 update하기
+					updateny = pdpService.installService(input);
+					// resultTxt값 update하기
+					updateresult = pdpService.updateResult(input);
+					
+					// 변경 이후 모든 서비스 정보 받아오기
+					services = pdpService.getControlList();
+					
+					System.out.println("services checkaaa : " + services);
+				}
+				
+				// 하나의 스크립트가 끝나고 나면 다시 flag값을 false로 변경해주고
+				// 다른 버튼을 눌러서 스크립트가 실행될 수 있도록 하기
+				
+				// 이미 result_txt가 있다는 것은 service작업이 끝난 후 최종 String을 return받은거니까
+				// 이 시점에 다시 flag값을 false로 변경해도 무방하다고 생각
+				System.out.println("db업데이트 이후 : " + installFlag);
+				
+				installFlag = false;
+				
+				System.out.println("else문 마지막에 flag값 false로 변경 : " + installFlag);
 			}
 
 		} catch (IOException e)

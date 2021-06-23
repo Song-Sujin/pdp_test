@@ -69,7 +69,7 @@
         <div class="container">
         
         <!-- 여기부터 -->
-        <h1>Dashboard Page</h1>
+        <h2>Dashboard Page</h2>
 	
 		<%-- <div><span>${member.id }로 로그인 중</span></div>
 		<div>
@@ -218,6 +218,7 @@
 		
 		// install 버튼 클릭 시 
 		$(document).on("click", ".installBtn", function() {
+			
 			var params = "service_name=" + $(this).val();
 			
 			// 현재 선택된 서비스명
