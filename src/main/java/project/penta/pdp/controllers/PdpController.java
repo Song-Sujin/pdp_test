@@ -563,10 +563,29 @@ public class PdpController
 
 		return new ModelAndView("installer9");
 	}
-
-	// installer9 -> dashboard
+	
+	// installer9 -> installer10
 	@RequestMapping(value = "/installer9.do", method = RequestMethod.POST)
 	public ModelAndView installer9(Model model)
+	{
+		Pdp member = null;
+
+		try
+		{
+
+		} catch (Exception e)
+		{
+			return webHelper.redirect(null, e.getLocalizedMessage());
+		}
+
+		model.addAttribute("member", member);
+
+		return new ModelAndView("installer10");
+	}
+
+	// installer10 -> dashboard
+	@RequestMapping(value = "/installer10.do", method = RequestMethod.POST)
+	public ModelAndView installer10(Model model)
 	{
 		List<Pdp> services = null;
 

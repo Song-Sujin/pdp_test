@@ -25,7 +25,7 @@
       <property name="driverClass" value="org.postgresql.Driver"></property>
       <property name="url" value="jdbc:postgresql://localhost:5432/postgres"></property>
       <property name="username" value="postgres"></property>
-      <property name="password" value="postgres"></property>
+      <property name="password" value="bigdata99"></property>
 	</bean>
    
    <!-- SQLSessionFactory 객체 생성 -->

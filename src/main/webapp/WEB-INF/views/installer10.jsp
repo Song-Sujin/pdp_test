@@ -39,7 +39,7 @@
           <a href="#"> 4. Choose Services</a>
         </li>
         <li>
-          <a href="#" > 5. Assign Masters</a>
+          <a href="#"> 5. Assign Masters</a>
         </li>
         <li>
           <a href="#"> 6. Assign Slaves and Clients</a>
@@ -54,14 +54,14 @@
           <a href="#"> 9. Install,Start and Test</a>
         </li>
         <li>
-          <a href="#" class="disable"> 10. Summary</a>
+          <a href="#"> 10. Summary</a>
         </li>
       </ul>
 
     </nav>
 
     <div id="content" class="p-3 p-md-5">
-      <form method="post" action="${pageContext.request.contextPath }/installer9.do">
+      <form method="post" action="${pageContext.request.contextPath }/installer10.do">
       <div class="" style="height:90%;">
         <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
